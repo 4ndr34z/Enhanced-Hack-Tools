@@ -31,7 +31,7 @@ With the extension you **no longer need to search for payloads in different webs
 
 ### Current functions:
 
-- Dynamic Reverse Shell generator (PHP, Bash, Ruby, Python, Perl, Netcat)
+- Dynamic Reverse Shell generator (PHP, Bash, Ruby, Python, Perl, Netcat, Powershell)
 - Shell Spawning (TTY Shell Spawning)
 - XSS Payloads
 - Basic SQLi payloads
