@@ -303,7 +303,7 @@ export default (props) => {
 				}}
 			>
 				<Title level={3}>
-					Powershell <IconFont type='icon-python' />
+					Powershell <IconFont type='icon-command-line' />
 				</Title>
 				<Paragraph copyable ellipsis={true}>
 					{" "}
