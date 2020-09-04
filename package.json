@@ -1,6 +1,6 @@
 {
   "name": "HacTools",
-  "version": "0.1.0a",
+  "version": "0.1.0b",
   "description": "The all in one Red team browser extension for web pentesters",
   "main": "index.js",
   "scripts": {
