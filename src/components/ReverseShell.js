@@ -328,7 +328,7 @@ export default (props) => {
 						<LinkOutlined /> URL encoded
 					</Button>
 				</Clipboard>
-
+			</div>
 		</QueueAnim>
 	);
 };
