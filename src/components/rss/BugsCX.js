@@ -3,32 +3,26 @@ import { Typography, Empty, Spin, Button, List, PageHeader, Tag } from 'antd';
 import { goTo } from 'react-chrome-extension-router';
 import { useQuery } from 'react-query';
 import QueueAnim from 'rc-queue-anim';
-import FeedRSS from './FeedRSS';
+import CxsecurityChoose from './CxsecurityChoose';
 
 const { Title } = Typography;
 
 const fetchApi = async () => {
 	const res = await fetch(
-		'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fwww.exploit-db.com%2Frss.xml&api_key=spbf63tt7rvx2r0wh2x6yoz00ssjyztpceqqkdj3&order_dir=desc&count=100'
+		'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fcxsecurity.com%2Fwlb%2Frss%2Fvulnerabilities%2F&api_key=cpe1hekkfknhpeqov1hvcojojd9csg01yqybwsaw&count=100'
 	);
 	return res.json();
 };
 
 export default (props) => {
-	const { data, status, error } = useQuery('exploitdb', fetchApi);
+	const { data, status, error } = useQuery('cisco', fetchApi);
+
 	return (
 		<QueueAnim delay={300} duration={1500}>
 			<PageHeader
-				onBack={() => goTo(FeedRSS)}
-				title='Feed RSS'
-				subTitle='Exploit-DB.com RSS Feed'
-				extra={[
-					<Button key='1' type='primary'>
-						<a href='https://exploit-db.com' rel='noreferrer noopener' target='_blank'>
-							Visit orignal website
-						</a>
-					</Button>
-				]}
+				onBack={() => goTo(CxsecurityChoose)}
+				title='Vulnerabilities Database'
+				subTitle='World Laboratory of Bugtraq 2 CXSecurity.com'
 			/>
 			{status === 'loading' && (
 				<div style={{ textAlign: 'center' }}>
@@ -37,7 +31,7 @@ export default (props) => {
 				</div>
 			)}
 			{status === 'error' && (
-				<div>
+				<React.Fragment>
 					<Empty
 						image='https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg'
 						imageStyle={{
@@ -56,7 +50,7 @@ export default (props) => {
 							</a>
 						</Button>
 					</Empty>
-				</div>
+				</React.Fragment>
 			)}
 			{status === 'success' && (
 				<div
@@ -65,8 +59,14 @@ export default (props) => {
 						padding: 15
 					}}
 				>
-					<Title variant='Title level={4}' style={{ fontWeight: 'bold', marginTop: 15 }}>
-						Recent exploit
+					<Title
+						variant='Title level={4}'
+						style={{
+							fontWeight: 'bold',
+							marginTop: 15
+						}}
+					>
+						Recent Vulnerabilities
 					</Title>
 					<List
 						itemLayout='horizontal'
@@ -77,31 +77,30 @@ export default (props) => {
 								actions={[
 									<div>
 										{(() => {
-											const name_tag = list.title.match(/[a-zA-Z]+/)[0];
-											switch (name_tag) {
-												case 'webapps':
-													return <Tag color='processing'>{name_tag}</Tag>;
-												case 'local':
-													return <Tag color='magenta'>{name_tag}</Tag>;
-												case 'dos':
-													return <Tag color='orange'>{name_tag}</Tag>;
-												case 'remote':
-													return <Tag color='green'>{name_tag}</Tag>;
-												default:
-													return 'None';
+											const severityLevel = list.content.match(/Risk: (\w{1,})/);
+											if (!severityLevel) {
+												return 'None';
+											} else {
+												switch (severityLevel[1]) {
+													case 'High':
+														return <Tag color='red'>{severityLevel[1]}</Tag>;
+													case 'Medium':
+														return <Tag color='orange'>{severityLevel[1]}</Tag>;
+													case 'Low':
+														return <Tag color='green'>{severityLevel[1]}</Tag>;
+													default:
+														return 'None';
+												}
 											}
 										})()}
 									</div>,
 									<Tag color='geekblue' style={{ marginLeft: 5 }}>
-										{list.pubDate.slice(
-											list.pubDate.indexOf('20'),
-											list.pubDate.lastIndexOf('0') - 8
-										)}
+										{list.author}
 									</Tag>
 								]}
 							>
 								<a href={list.link} alt='exploit_db_link' target='_blank' rel='noreferrer noopener'>
-									{list.description}
+									{list.title}
 								</a>
 							</List.Item>
 						)}
