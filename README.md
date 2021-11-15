@@ -39,6 +39,13 @@ HackTools, is a web extension facilitating your **web application penetration te
 
 With the extension you **no longer need to search for payloads in different websites** or in your local storage space, most of the tools are accessible in one click. HackTools is accessible either in **pop up mode** or in a whole tab in the **Devtools** part of the browser with F12.
 
+### Enhancements
+- Added my PS Revshell
+- Added base64 encoding of PS revshell
+- Added base64 encoding of Netcat revshell
+- Added Integer and Hexadecimal convertion of IP.
+- Added a LOLBAS and GTFOBins pane
+
 ### Current functions
 
 - Dynamic Reverse Shell generator (PHP, Bash, Ruby, Python, Perl, Netcat)
