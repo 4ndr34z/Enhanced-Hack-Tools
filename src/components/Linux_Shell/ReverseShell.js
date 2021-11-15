@@ -249,7 +249,6 @@ export default (props) => {
 					PowerShell <IconFont type='icon-powershell' />
 				</Title>
 				<Paragraph editable copyable ellipsis={true}>
-					{" "}
 					{ps+PS_rshell}
 				</Paragraph>
 				<Clipboard component='a' data-clipboard-text={ps+PS_rshell}>
