@@ -66,7 +66,7 @@ With the extension you **no longer need to search for payloads in different webs
 <div align='center'>
   <img alt="preview_1" src="https://raw.githubusercontent.com/4ndr34z/Enhanced-Hack-Tools/master/eht.png" />
 </div>
-
+<br>
 <div align='center'>
   <img alt="preview_2" src="https://raw.githubusercontent.com/4ndr34z/Enhanced-Hack-Tools/master/eht2.png" />
 </div>
