@@ -96,8 +96,8 @@ export default (props) => {
 				<Paragraph>
 					Obtains the administrator cookie or sensitive access token, the following payload will send it to a
 					controlled page.
-<br><br>
-					<b>Avoid</b> using "document.location", as the first instance will redirect browser. Very noicy. Will also make further changes to the payload impossible. This is a last resort payloads.
+					<br></br><br></br>
+					<b>Avoid</b> using "document.location", as the first instance will redirect the browser. Very noisy. Will also make further changes to the payload impossible. This is a last resort payloads.
 				</Paragraph>
 				{DataGrabber.map((k, i) => {
 					return (
