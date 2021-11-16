@@ -231,7 +231,7 @@ const MSFBuilder = () => {
 									{values.NOP > '' && ' -n ' + values.NOP}
 									{values.Encoder > '' && ' -e ' + values.Encoder}
 									{values.EncoderIterations > '' && ' -i ' + values.EncoderIterations}
-									{values.BadCharacters > '' && ' -b ' + `"{values.BadCharacters}"`}
+									{values.BadCharacters > '' && ' -b ' + values.BadCharacters}
 									{values.Format > '' && ' -f ' + values.Format}
 									{values.Outfile > '' && ' -o ' + values.Outfile}
 								</Text>
