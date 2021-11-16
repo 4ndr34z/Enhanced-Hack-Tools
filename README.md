@@ -45,6 +45,7 @@ With the extension you **no longer need to search for payloads in different webs
 - Added base64 encoding of Netcat revshell
 - Added Integer and Hexadecimal convertion of IP.
 - Added a LOLBAS and GTFOBins pane
+- Some other minor additions
 
 ### Current functions
 
