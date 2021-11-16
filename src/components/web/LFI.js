@@ -52,6 +52,8 @@ export default (props) => {
 		{ title: '/var/log/apache2/access.log' },
 		{ title: '/var/log/apache/error.log' }
 	];
+
+	
 	const mysql = [
 		{ title: '/var/lib/mysql/mysql/user.frm' },
 		{ title: '/var/lib/mysql/mysql/user.MYD' },

