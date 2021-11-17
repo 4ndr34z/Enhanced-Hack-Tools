@@ -89,7 +89,7 @@ export default (props) => {
 				Enhanced Hacking Tools
 			</Paragraph>
 			<div style={{ padding: 15 }}>
-				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+				<Row gutter={{ xs: 80, sm: 16, md: 24, lg: 32 }}>
 					<Col span={12}>
 						<Input
 							maxLength={15}
@@ -99,6 +99,10 @@ export default (props) => {
 							onChange={handleChange('ip')}
 							value={values.ip}
 						/>
+						<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+						<Col span={12}>
+							</Col>
+						</Row>
 						IP as Long Integer:	<Paragraph copyable ellipsis={true}>
 						{ip2int(values.ip)}
 						</Paragraph>
@@ -116,6 +120,15 @@ export default (props) => {
 							value={values.port}
 						/>
 					</Col>
+				</Row>
+				<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+				<Col span={12}>
+				<Title level={3}>
+				Netcat Listener
+				</Title>
+				Linux: 	 <Paragraph copyable ellipsis={true}>rlwrap -cAr nc -lvnp {values.port}</Paragraph>
+				Windows: <Paragraph copyable ellipsis={true}>nc.exe -lvnp {values.port}</Paragraph>
+				</Col>
 				</Row>
 			</div>
 			<Divider dashed />
