@@ -99,16 +99,22 @@ export default (props) => {
 							onChange={handleChange('ip')}
 							value={values.ip}
 						/>
-						<Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-						<Col span={12}>
-							</Col>
-						</Row>
+						<Paragraph style={{ margin: 15 }}>
 						IP as Long Integer:	<Paragraph copyable ellipsis={true}>
 						{ip2int(values.ip)}
 						</Paragraph>
+						
+						</Paragraph>
+
+						
+						<Paragraph style={{ margin: 15 }}>
 						IP as Hexadecimal: <Paragraph copyable ellipsis={true}>
 							{ip2hex(values.ip)}
 							</Paragraph>
+							</Paragraph>
+
+
+					
 					</Col>
 					<Col span={12}>
 						<Input
@@ -126,8 +132,11 @@ export default (props) => {
 				<Title level={3}>
 				Netcat Listener
 				</Title>
+				<Paragraph style={{ margin: 15 }}>
 				Linux: 	 <Paragraph copyable ellipsis={true}>rlwrap -cAr nc -lvnp {values.port}</Paragraph>
 				Windows: <Paragraph copyable ellipsis={true}>nc.exe -lvnp {values.port}</Paragraph>
+			</Paragraph>
+				
 				</Col>
 				</Row>
 			</div>
