@@ -45,6 +45,26 @@ export default (props) => {
 	const domain_Policy = `Get-DomainPolicy`;
 	const domain_OUs = `Get-NetOU`;
 	const domain_trust = `Get-NetDomainTrust`;
+	const enumscript = ` $domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain() 
+	$PDC = ($domainObj.PdcRoleOwner).Name
+	$SearchString = "LDAP://"
+	$SearchString += $PDC + "/"
+	$DistinguishedName = "DC=$($domainObj.Name.Replace('.', ',DC='))"
+	$SearchString += $DistinguishedName
+	$Searcher = New-Object System.DirectoryServices.DirectorySearcher([ADSI]$SearchString) 
+	$objDomain = New-Object System.DirectoryServices.DirectoryEntry
+	$Searcher.SearchRoot = $objDomain
+	$Searcher.filter="samAccountName=username"
+	$Result = $Searcher.FindAll()
+	Foreach($obj in $Result)
+	{
+	Foreach($prop in $obj.Properties)
+	{
+	$prop
+	}
+	Write-Host "------------------------" } 
+	`;
+
 	// gpo
 	const gpo_enum = `Get-NetGPO -ComputerName computername.domain.com`;
 	// passwd enum
@@ -179,6 +199,12 @@ export default (props) => {
 				<Paragraph copyable ellipsis={true}>
 					{domain_trust}
 				</Paragraph>
+
+				<Text strong># Enum-script</Text>
+				<Paragraph copyable ellipsis={true}>
+				{enumscript}
+				</Paragraph>
+				
 
 				<Divider dashed />
 
