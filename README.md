@@ -120,7 +120,7 @@ Follow the instructions to create the project the default language should be Swi
 
 ```bash
 git clone https://github.com/4ndr34z/Enhanced-Hack-Tools
-cd Hack-Tools
+cd Enhanced-Hack-Tools
 npm install && npm run build     # If you have installed yarn you can replace npm with yarn
 ```
 
