@@ -85,25 +85,16 @@ With the extension you **no longer need to search for payloads in different webs
 </div>
 
 
-# Install the extension
-    
-<h2> 
-  <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/chromium.svg" alt="chromium_icon" title='Chromium' width="25" height="25" style="float:left;" />
-  Chromium based browser
-</h2>
 
-You can download the **latest build** [here.](https://github.com/LasCC/Hack-Tools/releases)
 
-Or, you can download the extension on the **chrome web store** [here.](https://chrome.google.com/webstore/detail/hack-tools/cmbndhnoonmghfofefkcccljbkdpamhi)
-
-Otherwise, you can build the project yourself from the source code
+You can build the project yourself from the source code
 
 <h2> 
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/firefox.svg" alt="firefox_icon" title='Firefox' width="25" height="25" style="float:left;" /> 
   Mozilla Firefox
 </h2>
 
-You can download **HackTools** on the Firefox browser add-ons [here.](https://addons.mozilla.org/en-US/firefox/addon/hacktools/)
+
 
 <h2> 
   <img src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/safari.svg" alt="safari_icon" title='Safari' width="25" height="25" style="float:left;" /> 
